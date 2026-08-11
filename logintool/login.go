@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"sort"
 	"strings"
 	"time"
@@ -129,8 +130,15 @@ func verify_login(auth_code string) {
 	}
 }
 
-var appkey = "4409e2ce8ffd12b8"
-var appsec = "59b43e04ad6965f34319062b478f83dd"
+func getEnvDefault(key, defaultVal string) string {
+	if val := os.Getenv(key); val != "" {
+		return val
+	}
+	return defaultVal
+}
+
+var appkey = getEnvDefault("BILI_APPKEY", "4409e2ce8ffd12b8")
+var appsec = getEnvDefault("BILI_APPSEC", "59b43e04ad6965f34319062b478f83dd")
 
 func signature(params *map[string]string) {
 	var keys []string
